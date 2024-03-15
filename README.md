@@ -36,3 +36,35 @@ All the partial derivates are the step values that we need to subtract from our 
 Total Loss = E1+E2, Let's plot a graph for all iterations & see how loss varies after each step weights are adjusted->
 <img width="611" alt="Screenshot 2024-03-02 at 8 21 49 AM" src="https://github.com/ayushmathur71/BackPropagation-MNIST/assets/30623714/fd5a4b08-d47c-4bdf-be5c-e6eb02d9879c">
 
+S6 -> PART 2
+We achieved 99.49% validation accuracy with a DNN of 13,808 parameters.
+First we defined the transforms-
+1. ToTensor
+2. Normalization with Mean & Std values
+3. Rotation - This is angle by which we want to rotate the train images, as we identified that the train dataset contains rotated images.
+
+Next we set the seed for reproducibility of the weights in our neural network.
+We then create the train & test dataloaders, these dataloader objects helps us to iterate through the image dataset. We have printed a couple of images to analyse our training image set.
+
+Next we define the neural network:
+Key points to notice here, for every 3*3 convolution layer, we have added Batch Normalisation, Dropout value & RELU activation function.
+Batch normalisation helps to normalise the scale of all images in the batch
+Dropout value prevents overfitting & scales up the predicted value in proportion to the dropout%
+RELU - activation function is required to only pass on the positive values
+
+Neural Netwrok Architecture:
+        x = self.convblock1(x)
+        x = self.convblock2(x)
+        x = self.convblock3(x)
+        x = self.pool1(x)
+        x = self.convblock4(x)
+        x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.convblock7(x)
+        x = self.gap(x)        
+        x = self.convblock8(x)
+As you notice, we have a max pooling layer after 3 convolution blocks (to reduce channel size). 
+At the end right before the last convolution we have introduced a GAP layer, this helps increase our receptive field & decrease the output channel size to 1
+Last convolution block convert 'n' channels into 10 channels that are passed to a log_softmax function.
+
+Priniting the model summary - 13,808 parameters, then defining the training & testing functions that include backpropagation, loss calculation for each batch and printing of progress bar with accuracy details for each EPOCH. We have set LR at 0.01 and with 20 EPOCHS we are able to achieve a maximum validation accuracy of 99.49%.
